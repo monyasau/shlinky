@@ -69,7 +69,7 @@ const Page = () => {
       <div className="mx-auto  flex-col flex items-center h-screen justify-center">
       <div className="max-w-[490px] w-[95%] lg:w-[100%] mx-auto rounded-xl p-6 md:px-0 md:py-6 ">
 
-<img className=" mr-auto" src="/logoWithText.svg" alt="logo" />
+<img className=" mr-auto md:mx-auto" src="/logoWithText.svg" alt="logo" />
 </div>
         <div className="max-w-[490px] w-[95%] lg:w-[100%] mx-auto rounded-xl p-6 md:p-10 bg-white">
           <div aria-label="form wrapper" className=" flex gap-y-10 flex-wrap">
