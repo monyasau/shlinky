@@ -5,18 +5,23 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const Page = () => {
-  const [error, setError] = React.useState({
+  const [error, setError] = useState({
     email: false,
     password: false,
     confirmPassword: false,
   });
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
 
   const handleForm = async (event: React.FormEvent) => {
     event.preventDefault();
+    if(email === "" || password === "" || confirmPassword === ""){
+      password ===""&&setError({...error, password:true})
+      confirmPassword ===""&&setError({...error, confirmPassword:true})
+      email ===""&&setError({...error, email:true})
+    }
     if(error.email === false && error.password === false && error.confirmPassword == false){
       const { result, error } = await signUp(email, password);
       if (error) {
@@ -24,9 +29,9 @@ const Page = () => {
       }
       // else successful
       console.log(result);
-      return router.push("/admin");
+      return router.push("/dashboard");
     }
-    else{
+    else {
       validateEmail();
       validatePassword();
       validateConfirmPassword();
@@ -72,17 +77,21 @@ const Page = () => {
     
   return (
     <div className="w-full">
-      <div className="mx-auto flex-col flex items-center h-screen">
-        <img className="my-6" src="/logoWithText.svg" alt="logo" />
-        <div className="max-w-[480px] mx-auto rounded-xl p-10 bg-white">
+      <div className="mx-auto  py-4  flex-col flex items-center h-screen">
+        <div className="max-w-[490px] w-[95%] lg:w-[100%] mx-auto rounded-xl p-6 md:px-0 md:py-6 ">
+
+        <img className=" mr-auto" src="/logoWithText.svg" alt="logo" />
+        </div>
+        <div className="max-w-[490px] w-[95%] lg:w-[100%] mx-auto rounded-xl p-6 md:p-10 bg-white">
           <div aria-label="form wrapper" className=" flex gap-y-10 flex-wrap">
             <div className="flex flex-wrap gap-y-2 w-full">
               <h1 className="text-3xl font-bold">Create account</h1>
-              <p className="text-base text-[#737373">
+              <p className="text-base text-[#737373]">
                 Let’s get you started sharing your links!
               </p>
             </div>
             <form
+              method="post"
               onSubmit={handleForm}
               className="flex w-full flex-col gap-y-6"
             >
@@ -110,14 +119,13 @@ const Page = () => {
 
                   <input
                     onChange={(e) => setEmail(e.target.value)}
-                    required
                     type="email"
                     name="email"
                     id="email"
                     placeholder="e.g. alex@email.com"
                     className={error.email?" py-3 outline-none":"w-[90%]  py-3 outline-none"}
                   />
-                  {error.email && <p className="text-red-600 text-sm">Invalid email</p>}
+                  {error.email && <p className="text-red-600 text-sm">Can’t be empty</p>}
                 </div>
               </label>
               <label htmlFor="password">
@@ -144,7 +152,6 @@ const Page = () => {
 
                   <input
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                     type="password"
                     name="password"
                     id="password"
@@ -179,7 +186,6 @@ const Page = () => {
 
                   <input
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
                     type="password"
                     name="confirmPassword"
                     id="confirmPassword"
@@ -192,12 +198,12 @@ const Page = () => {
               <p className="text-sm text-[#737373]">
                 Password must contain at least 8 characters
               </p>
-              <button type="submit" className="rounded-lg p-3 text-white bg-[#633CFF]">
+              <button type="submit" className="rounded-lg p-3 text-white  hover:bg-[#BEADFF] bg-[#633CFF]">
                 Create new account
               </button>
               <p className="mx-auto text-[#737373]">
                 Already have an account?{" "}
-                <Link className="text-[#633CFF]" href="/signin">
+                <Link className="text-[#633CFF]" href="/login">
                   {" "}
                   Login
                 </Link>
