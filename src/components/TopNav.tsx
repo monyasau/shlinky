@@ -6,7 +6,7 @@ import { userType } from "@/types/type";
 
 const TopNav = () => {
   const [signedIn, setSignedIn] = useState(false);
-  const user = useAuthContext() as userType;
+  const { user } = useAuthContext() as { user: userType | null };
   const router = useRouter();
   useEffect(() => {
     if (user == null) {
