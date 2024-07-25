@@ -4,15 +4,16 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { addDoc, where,doc, deleteDoc, query, collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import { userType } from "@/types/type";
 
 const Page = () => {
   const [linksAvailable, setLinksAvailable] = useState(false);
   const [userLinks, setUserLinks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const addLinkButton: any = useRef();
-
-  const { user } = useAuthContext();
-  const router = useRouter();
+ 
+const user = useAuthContext() as userType;
+const router = useRouter();
   console.log(user);
   useEffect(() => {
     if (user == null) router.push("/login");

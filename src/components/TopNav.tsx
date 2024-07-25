@@ -2,9 +2,11 @@ import { useAuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { userType } from "@/types/type";
+
 const TopNav = () => {
   const [signedIn, setSignedIn] = useState(false);
-  const { user } = useAuthContext();
+  const user = useAuthContext() as userType;
   const router = useRouter();
   useEffect(() => {
     if (user == null) {
