@@ -14,7 +14,7 @@ type LinkProps = {
   const handleShare = () => {
     const newShareUrl = `${window.location.origin}/share/${link.id}`;
     setShareUrl(newShareUrl);
-    navigator.clipboard.writeText(shareUrl);
+    navigator.clipboard.writeText(newShareUrl);
     alert(`The Link has been copied to clipboard`);
   };
     return (
