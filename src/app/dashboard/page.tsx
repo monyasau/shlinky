@@ -20,7 +20,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const addLinkButton: any = useRef();
 
-  const user = useAuthContext() as userType;
+  const user = useAuthContext() ;
   const router = useRouter();
   console.log(user);
   useEffect(() => {
