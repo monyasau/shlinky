@@ -1,4 +1,6 @@
-const Link=({id, url,platform})=> {
+import { linkType } from "@/types/type";
+
+const Link=({id, url,platform}:linkType)=> {
     return (
         <div className="p-5 rounded-xl bg-[#FAFAFA]">
             <div className="flex"aria-label="top bar">
