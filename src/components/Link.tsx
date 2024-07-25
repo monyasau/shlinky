@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { linkType } from "@/types/type";
+import { useState } from "react";
 
 type LinkProps = {
     link: linkType;
@@ -9,12 +10,12 @@ type LinkProps = {
   
   const Link: React.FC<LinkProps> = ({ link, removeLink, userLinks }) => {
     const router = useRouter(); // Initialize useRouter
-
+    const [shareUrl, setShareUrl]=useState("")
   const handleShare = () => {
-    const shareUrl = `${window.location.origin}/share/${link.id}`;
-    // You can copy this URL to clipboard or display it for the user
+    const newShareUrl = `${window.location.origin}/share/${link.id}`;
+    setShareUrl(newShareUrl);
     navigator.clipboard.writeText(shareUrl);
-    alert(`Link copied to clipboard: ${shareUrl}`);
+    alert(`The Link has been copied to clipboard`);
   };
     return (
         <div key={link.id} className="bg-[#fafafa] rounded-xl p-5">
@@ -32,6 +33,7 @@ type LinkProps = {
                         </svg>{" "}
                         Link # {userLinks.indexOf(link) + 1}
                       </div>
+                      <a href={shareUrl} className=""><code>{shareUrl}</code></a>
                       <div className="inline-flex gap-4">
                       <button
                         className="text-[#737373] "
@@ -66,7 +68,7 @@ type LinkProps = {
                         </svg>
 
                         <input
-                          type="email"
+                          type="text"
                           name="email"
                           disabled
                           value={link.platform}

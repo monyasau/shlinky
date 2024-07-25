@@ -187,7 +187,7 @@ const Page = () => {
             aria-label="footer"
             className="border-t  px-4 md:px-10 pt-8 flex "
           >
-            <button className="ml-auto customShadow py-3 px-7 text-white bg-[#633CFF] rounded-lg hover:bg-[#BEADFF] border-none">
+            <button disabled={userLinks.length===0}   className={`${userLinks.length === 0 ? 'bg-[#BEADFF]' : ''} ml-auto customShadow py-3 px-7 text-white bg-[#633CFF] rounded-lg hover:bg-[#BEADFF] border-none`}            >
               Saves
             </button>
           </div>
