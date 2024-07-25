@@ -30,3 +30,10 @@ export interface linkType{
     userId: string;
     platform: string;
 }
+export interface userDataType{
+    id: string;
+    url: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
+}

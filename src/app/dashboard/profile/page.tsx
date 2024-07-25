@@ -12,85 +12,64 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
-import { userType, linkType } from "@/types/type";
-import Link from "@/components/Link";
+import { userType, userDataType } from "@/types/type";
+import PopUp from "@/components/PopUp";
 
 const Page = () => {
-  const [linksAvailable, setLinksAvailable] = useState(false);
-  const [userLinks, setUserLinks] = useState<linkType[]>([]);
+  const [profileAvailable, setProfileAvailable] = useState(false);
+  const [userDatas, setUserDatas] = useState<userDataType[]>([]);
+  const [firstName, setFirstName] = useState<string>("");
+  const [popupText, setPopupText] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
-  const addLinkButton: any = useRef();
 
   const { user } = useAuthContext() as { user: userType | null };
   const router = useRouter();
-  console.log(user);
   useEffect(() => {
     if (user == null) {
       router.push("/login");
     } else {
-      readLinks();
+      readData();
     }
   }, [user]);
 
-  const platforms = [
-    "Github",
-    "FrontendMentor",
-    "Twitter",
-    "LinkedIn",
-    "YouTube",
-    "Facebook",
-    "Twitch",
-    "Dev",
-    "Codewars",
-    "Codepen",
-    "freeCodeCamp",
-    "GitLab",
-    "Hashnode",
-    "StackOverflow",
-  ];
-
-  const getRandomPlatform = () => {
-    const randomIndex = Math.floor(Math.random() * platforms.length);
-    return platforms[randomIndex];
-  };
-
-  const addLink = async () => {
-    const randomPlatform = getRandomPlatform();
+//   const checkFields=()=>{return ;}
+  const addData = async () => {
     try {
       if (user) {
 
-      await addDoc(collection(db, "links"), {
-        url: randomPlatform + ".com", // Replace this with the appropriate link if needed
-        platform: randomPlatform,
-        title: randomPlatform + " home",
+      await addDoc(collection(db, "userDatas"), {
+        email: user.email, // Replace this with the appropriate link if needed
+        firstName: lastName,
+        lastName: firstName,
         userId: user.uid,
       });
-      readLinks(); // Refresh the list of links after adding a new one
+      readData(); // Refresh the list of links after adding a new one
     }
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
-  const readLinks = async () => {
-    // setLinksAvailable(true);
+  const readData = async () => {
+    // setProfileAvailable(true);
     setIsLoading(true);
 
     try {
             if (user) {
 
-      const q = query(collection(db, "links"), where("userId", "==", user.uid));
+      const q = query(collection(db, "userDatas"), where("userId", "==", user.uid));
       const querySnapshot = await getDocs(q);
-      const linksData: linkType[] = [];
+      const userData: userDataType[] = [];
       querySnapshot.forEach((doc) => {
-        linksData.push({ id: doc.id, ...doc.data() } as linkType);
-      });
-      setUserLinks(linksData);
-      setLinksAvailable(linksData.length > 0);
-      setLinksAvailable(linksData.length > 0);
+          userData.push({ id: doc.id} as userDataType);
+        });
+        setUserDatas(userData);
+      setProfileAvailable(userData.length > 0);
+      console.log()
     }
     } catch (e) {
       console.log("error getting links", e);
-      setLinksAvailable(false);
+      setProfileAvailable(false);
     } finally {
       setIsLoading(false);
     }
@@ -102,22 +81,8 @@ const Page = () => {
     //   console.log({ url, title, userId, platform });
     // });
   };
-  const removeLink = async (id: string) => {
-    setIsLoading(true);
-
-    try {
-      await deleteDoc(doc(db, "links", id));
-      const updatedLinks = userLinks.filter((link) => link.id !== id); // Update state
-      setUserLinks(updatedLinks);
-      setLinksAvailable(updatedLinks.length > 0);
-    } catch (e) {
-      console.error("Error removing document: ", e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   useEffect(() => {
-    readLinks();
+    readData();
   }, []);
   return (
     <div className="w-full pt-0 p-6">
@@ -131,11 +96,10 @@ const Page = () => {
             className="flex flex-col px-4 md:px-10 gap-2"
           >
             <h1 className="text-[#333333] text-4xl font-bold">
-              Customize your links
+              Profile details
             </h1>
             <p className="text-base text-[#737373]">
-              Add/edit/remove links below and then share all your profiles with
-              the world!
+            Add your details to create a personal touch to your profile.
             </p>
           </div>
           <div
@@ -146,14 +110,33 @@ const Page = () => {
               <div className="flex justify-center">
                 <div className="loader">Loading...</div>
               </div>
-            ) : linksAvailable ? (
+            ) : profileAvailable ? (
               <>
-              
+              <div className="bg-[#fafafa] grid grid-cols-3 items-center text-[#737373] rounded-xl p-5 ">
+              Profile picture
+              <div className="w-[200px] h-[200px] rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500"></div>
+              <p className="text-sm">Image must be below 1024x1024px. Use PNG or JPG format.</p>
+              </div>
+              <div className="bg-[#fafafa] rounded-xl p-5 grid gap-4 text-[#737373]">
+              <div className="grid grid-cols-3 items-center">First name*<input type="name" onChange={(e)=>setFirstName(e.target.value)} required placeholder="Ben" className="col-span-2 customShadow h-12 px-4 rounded-lg border border-[#D9D9D9] outline-none"/></div>
+              <div className="grid grid-cols-3 items-center">First name*<input type="name" onChange={(e)=>setLastName(e.target.value)} required placeholder="Wright" className="col-span-2 customShadow h-12 px-4 rounded-lg border border-[#D9D9D9] outline-none"/></div>
+              <div className="grid grid-cols-3 items-center">Email<input type="name" value={user?.email} disabled placeholder="alex@email.com" className="col-span-2 customShadow h-12 px-4 rounded-lg border border-[#D9D9D9] outline-none"/></div>
+              </div>
               </>
             ) : (
-              <div className="bg-[#fafafa] rounded-xl p-5 ">
-              
+                <>
+                <PopUp popupText=""/>
+              <div className="bg-[#fafafa] grid grid-cols-3 items-center text-[#737373] rounded-xl p-5 ">
+              Profile picture
+              <div className="w-[200px] h-[200px] rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500"></div>
+              <p className="text-sm">Image must be below 1024x1024px. Use PNG or JPG format.</p>
               </div>
+              <div className="bg-[#fafafa] rounded-xl p-5 grid gap-4 text-[#737373]">
+              <div className="grid grid-cols-3 items-center">First name*<input type="name" onChange={(e)=>setFirstName(e.target.value)} required placeholder="Ben" className="col-span-2 customShadow h-12 px-4 rounded-lg border border-[#D9D9D9] outline-none"/></div>
+              <div className="grid grid-cols-3 items-center">First name*<input type="name" onChange={(e)=>setLastName(e.target.value)} required placeholder="Wright" className="col-span-2 customShadow h-12 px-4 rounded-lg border border-[#D9D9D9] outline-none"/></div>
+              <div className="grid grid-cols-3 items-center">Email<input type="name" value={user?.email} disabled placeholder="alex@email.com" className="col-span-2 customShadow h-12 px-4 rounded-lg border border-[#D9D9D9] outline-none"/></div>
+              </div>
+              </>
             )}
           </div>
 
@@ -161,8 +144,8 @@ const Page = () => {
             aria-label="footer"
             className="border-t  px-4 md:px-10 pt-8 flex "
           >
-            <button className="ml-auto customShadow py-3 px-7 text-white bg-[#633CFF] rounded-lg hover:bg-[#BEADFF] border-none">
-              Saves
+            <button onClick={addData} disabled={firstName===""||lastName===""}  className={`${firstName===""||lastName==="" ? 'bg-[#BEADFF]' : ''} ml-auto customShadow py-3 px-7 text-white bg-[#633CFF] rounded-lg hover:bg-[#BEADFF] border-none`} >
+              Save
             </button>
           </div>
         </div>

@@ -1,7 +1,9 @@
+import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
-import "./globals.css";
 import ClientLayout from "@/ClientLayout";
+import { ToastContainer } from "react-toastify";
 
 const InstrumentSans = Instrument_Sans({ subsets: ["latin"] });
 
@@ -19,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={InstrumentSans.className}>
         <ClientLayout>{children}</ClientLayout>
+        <ToastContainer />
       </body>
     </html>
   );
