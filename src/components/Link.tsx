@@ -1,11 +1,21 @@
+import { useRouter } from "next/navigation";
 import { linkType } from "@/types/type";
+
 type LinkProps = {
     link: linkType;
     removeLink: (id: string) => void;
     userLinks: linkType[];
   };
   
-const Link: React.FC<LinkProps> = ({ link, removeLink, userLinks }) => {
+  const Link: React.FC<LinkProps> = ({ link, removeLink, userLinks }) => {
+    const router = useRouter(); // Initialize useRouter
+
+  const handleShare = () => {
+    const shareUrl = `${window.location.origin}/share/${link.id}`;
+    // You can copy this URL to clipboard or display it for the user
+    navigator.clipboard.writeText(shareUrl);
+    alert(`Link copied to clipboard: ${shareUrl}`);
+  };
     return (
         <div key={link.id} className="bg-[#fafafa] rounded-xl p-5">
                     <div className="flex mb-4 justify-between">
@@ -22,12 +32,20 @@ const Link: React.FC<LinkProps> = ({ link, removeLink, userLinks }) => {
                         </svg>{" "}
                         Link # {userLinks.indexOf(link) + 1}
                       </div>
+                      <div className="inline-flex gap-4">
+                      <button
+                        className="text-[#737373] "
+                        onClick={handleShare}
+                      >
+                        Share
+                      </button>
                       <button
                         className="text-[#737373] "
                         onClick={() => removeLink(link.id)}
                       >
                         Remove
                       </button>
+                      </div>
                     </div>
                     <label htmlFor="email">
                       <p className="text-sm text-[#333333] mb-1">Platform</p>
