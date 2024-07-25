@@ -33,7 +33,7 @@ type LinkProps = {
                         </svg>{" "}
                         Link # {userLinks.indexOf(link) + 1}
                       </div>
-                      <a href={shareUrl} className=""><code>{shareUrl}</code></a>
+                      <a href={shareUrl} className="cursor-pointer"><code>{shareUrl}</code></a>
                       <div className="inline-flex gap-4">
                       <button
                         className="text-[#737373] "

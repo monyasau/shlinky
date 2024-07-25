@@ -12,7 +12,6 @@ type paramsProp ={
 const Page:React.FC<paramsProp> = ({params}) => {
   const [link, setLink] = useState<linkType | null>(null);
   const id = params.id;
-  console.log(params)
 
   useEffect(() => {
     if (id) {
@@ -34,12 +33,16 @@ const Page:React.FC<paramsProp> = ({params}) => {
   }
 const lowerCaseUrl =link.url.toLowerCase();
   return (
-    <div className="w-full min-h-screen relative">
-    <div className="bg-[#633CFF] rounded-b-[32px] w-full h-[35vh]"></div>
+    <div className="w-full min-h-screen absolute top-0 ">
+    <div className="bg-[#633CFF] absolute top-0 rounded-b-[32px] w-full h-[35vh]"></div>
     <div className="py-12 px-14 absolute shareShadow bg-white rounded-[24px] w-[570px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <div className="flex justify-center flex-col items-center bg-[#fafafa] py-4 rounded-xl gap-4">
       <iframe className="rounded" src={"https://"+lowerCaseUrl}   width="300"
-  height="200"
+  height="200" 
+  
+  onError={(e) => {
+    console.error("Failed to load iframe:", e);
+  }}
   title={link.title}></iframe>
       <h1 className="text-2xl font-bold ">{link.title}</h1>
       <p className="text-lg ">Platform: {link.platform}</p>

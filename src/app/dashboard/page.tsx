@@ -24,7 +24,6 @@ const Page = () => {
 
   const { user } = useAuthContext() as { user: userType | null };
   const router = useRouter();
-  console.log(user);
   useEffect(() => {
     if (user == null) {
       router.push("/login");
@@ -46,7 +45,7 @@ const Page = () => {
     "Codepen",
     "freeCodeCamp",
     "GitLab",
-    "Hashnode",
+    "Figma",
     "StackOverflow",
   ];
 

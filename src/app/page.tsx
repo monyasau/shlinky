@@ -18,8 +18,8 @@ export default function Home() {
   }, [user]);
 
   return (
-   <>
+   <div className="w-full h-screen flex justify-center items-center">
    Checking if you're logged in.
-   </>
+   </div>
   );
 }
