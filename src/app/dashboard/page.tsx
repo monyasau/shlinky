@@ -24,7 +24,11 @@ const Page = () => {
   const router = useRouter();
   console.log(user);
   useEffect(() => {
-    if (user == null) router.push("/login");
+    if (user == null) {
+      router.push("/login");
+    } else {
+      readLinks();
+    }
   }, [user]);
 
   const platforms = [
@@ -52,6 +56,8 @@ const Page = () => {
   const addLink = async () => {
     const randomPlatform = getRandomPlatform();
     try {
+      if (user) {
+
       await addDoc(collection(db, "links"), {
         url: randomPlatform + ".com", // Replace this with the appropriate link if needed
         platform: randomPlatform,
@@ -59,6 +65,7 @@ const Page = () => {
         userId: user.uid,
       });
       readLinks(); // Refresh the list of links after adding a new one
+    }
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -68,6 +75,8 @@ const Page = () => {
     setIsLoading(true);
 
     try {
+            if (user) {
+
       const q = query(collection(db, "links"), where("userId", "==", user.uid));
       const querySnapshot = await getDocs(q);
       const linksData: linkType[] = [];
@@ -75,11 +84,9 @@ const Page = () => {
         linksData.push({ id: doc.id, ...doc.data() } as linkType);
       });
       setUserLinks(linksData);
-      if (linksData.length === 0) {
-        setLinksAvailable(false);
-      } else {
-        setLinksAvailable(true);
-      }
+      setLinksAvailable(linksData.length > 0);
+      setLinksAvailable(linksData.length > 0);
+    }
     } catch (e) {
       console.log("error getting links", e);
       setLinksAvailable(false);
