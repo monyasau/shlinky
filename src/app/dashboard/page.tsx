@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { addDoc, where,doc, deleteDoc, query, collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
-import { userType } from "@/types/type";
+import { userType, linkType } from "@/types/type";
 
 const Page = () => {
   const [linksAvailable, setLinksAvailable] = useState(false);
@@ -62,9 +62,9 @@ const router = useRouter();
     try {
       const q = query(collection(db, "links"), where("userId", "==", user.uid));
       const querySnapshot = await getDocs(q);
-      const linksData = [];
+      const linksData: linkType[] = [];
       querySnapshot.forEach((doc) => {
-        linksData.push({ id: doc.id, ...doc.data() });
+        linksData.push({ id: doc.id, ...doc.data() } as linkType);
       });
       setUserLinks(linksData);
       if(linksData.length===0){setLinksAvailable(false)}else{setLinksAvailable(true)}

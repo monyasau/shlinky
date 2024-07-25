@@ -22,3 +22,11 @@ export interface userType{
     lastLoginAt: number;
     apiKey: string;
 }
+
+export interface linkType{
+    id: string;
+    title?: string;
+    url: string;
+    userId: string;
+    platform: string;
+}
