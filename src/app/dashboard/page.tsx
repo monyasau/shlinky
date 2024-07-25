@@ -10,6 +10,7 @@ import {
   query,
   collection,
   getDocs,
+  updateDoc
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { userType, linkType } from "@/types/type";
@@ -116,6 +117,9 @@ const Page = () => {
       setIsLoading(false);
     }
   };
+  const editLink = async (id: string, updatedLink: linkType) => {
+   
+  }
   useEffect(() => {
     readLinks();
   }, []);
